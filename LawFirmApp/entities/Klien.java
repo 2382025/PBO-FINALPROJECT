@@ -1,5 +1,4 @@
-
-package entities;
+package LawFirmApp.entities;
 
 public class Klien{
     private String nama;
@@ -17,6 +16,11 @@ public class Klien{
         this.pengacara = pengacara;
         this.jumlahTagihan = jumlahTagihan;
     }
+
+    public Klien() {
+
+    }
+
 
     // Getter dan Setter
     public String getNama() {

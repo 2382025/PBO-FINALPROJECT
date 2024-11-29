@@ -1,12 +1,17 @@
-package views;
+package LawFirmApp.views;
 
-import services.LawFirmService;
+import LawFirmApp.services.LawFirmService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.Scanner;
 
+@Component
 public class LawFirmTerminalViewImpl implements LawFirmView {
     private static Scanner scanner = new Scanner(System.in);
     private final LawFirmService lawFirmService;
 
+    @Autowired
     public LawFirmTerminalViewImpl(LawFirmService lawFirmService) {
         this.lawFirmService = lawFirmService;
     }

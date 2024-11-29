@@ -1,6 +1,4 @@
-package services;
-
-import entities.Klien;
+package LawFirmApp.services;
 
 public interface LawFirmService {
     // Mengambil daftar klien

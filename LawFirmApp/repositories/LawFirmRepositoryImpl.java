@@ -1,9 +1,14 @@
-package repositories;
-import entities.Klien;
+package LawFirmApp.repositories;
+import LawFirmApp.entities.Klien;
 
 public class LawFirmRepositoryImpl implements LawFirmRepository {
 
     private Klien[] daftarKlien = new Klien[10];
+
+    @Override
+    public Klien[] getAll() {
+        return new Klien[0];
+    }
 
     @Override
     public void showDaftarKlien() {
@@ -11,7 +16,7 @@ public class LawFirmRepositoryImpl implements LawFirmRepository {
         for (Klien klien : daftarKlien) {
             if (klien != null) {
                 System.out.println(nomor + ". | Nama: " + klien.getNama() + " | Kasus: " + klien.getJenisKasus() + " | Pengacara: " + klien.getPengacara() + " | Status: " + klien.getStatus() + "|");
-            nomor++;
+                nomor++;
             }
         }
     }
@@ -63,6 +68,11 @@ public class LawFirmRepositoryImpl implements LawFirmRepository {
         klien.setPengacara(pengacaraBaru);
         klien.setJumlahTagihan(tagihanBaru);
         return true;
+    }
+
+    @Override
+    public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String statusBaru, String pengacaraBaru, String tagihanBaru) {
+        return false;
     }
 
     @Override

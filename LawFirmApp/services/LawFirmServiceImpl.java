@@ -1,7 +1,6 @@
-package services;
+package LawFirmApp.services;
 
-import entities.Klien;
-import repositories.LawFirmRepository;
+import LawFirmApp.repositories.LawFirmRepository;
 
 public class LawFirmServiceImpl implements LawFirmService {
     private final LawFirmRepository lawFirmRepository;
