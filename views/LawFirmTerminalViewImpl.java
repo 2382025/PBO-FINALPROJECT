@@ -11,7 +11,7 @@ public class LawFirmTerminalViewImpl implements LawFirmView {
         this.lawFirmService = lawFirmService;
     }
 
-    // Input sederhana untuk memudahkan pengambilan data dari pengguna
+    // Input untuk memudahkan pengambilan data dari pengguna
     private static String input(String info) {
         System.out.print(info + " : ");
         return scanner.nextLine();
