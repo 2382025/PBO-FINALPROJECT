@@ -4,7 +4,7 @@ import services.LawFirmService;
 import java.util.Scanner;
 
 public class LawFirmTerminalViewImpl implements LawFirmView {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     private final LawFirmService lawFirmService;
 
     public LawFirmTerminalViewImpl(LawFirmService lawFirmService) {

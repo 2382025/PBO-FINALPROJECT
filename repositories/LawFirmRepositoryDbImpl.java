@@ -28,15 +28,15 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
             while (resultSet.next()) {
                 Klien klien = new Klien();
                 klien.setNama(resultSet.getString("nama"));
-                klien.setJenisKasus(resultSet.getString("jenis_kasus"));
-                klien.setTanggalRegistrasi(resultSet.getDate("tanggal_registrasi").toString());
+                klien.setJenisKasus(resultSet.getString("jenisKasus"));
+                klien.setTanggalRegistrasi(resultSet.getDate("tanggalRegistrasi").toString());
                 klien.setStatus(resultSet.getString("status"));
                 klien.setPengacara(resultSet.getString("pengacara"));
-                klien.setJumlahTagihan(String.valueOf(resultSet.getBigDecimal("jumlah_tagihan")));
+                klien.setJumlahTagihan(String.valueOf(resultSet.getBigDecimal("jumlahTagihan")));
                 klienList.add(klien);
             }
         } catch (SQLException e) {
-            System.out.println("Error fetching klien data: " + e.getMessage());
+            System.out.println("Error dalam mengambil data: " + e.getMessage());
         }
 
         return klienList.toArray(new Klien[0]);
@@ -49,7 +49,7 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
 
     @Override
     public void addKlien(String nama, String jenisKasus, String tanggalRegistrasi, String status, String pengacara, String jumlahTagihan) {
-        String sqlStatement = "INSERT INTO klien (nama, jenis_kasus, tanggal_registrasi, status, pengacara, jumlah_tagihan) VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlStatement = "INSERT INTO klien (nama, jenisKasus, tanggalRegistrasi, status, pengacara, jumlahTagihan) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
@@ -72,7 +72,13 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
 
     @Override
     public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String pengacaraBaru, String tagihanBaru) {
-        String sqlStatement = "UPDATE klien SET nama = ?, jenis_kasus = ?, tanggal_registrasi = ?, pengacara = ?, jumlah_tagihan = ? WHERE id = ?";
+        return false;
+    }
+
+
+    @Override
+    public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String statusBaru, String pengacaraBaru, String tagihanBaru) {
+        String sqlStatement = "UPDATE klien SET nama = ?, jenisKasus = ?, tanggalRegistrasi = ?, status = ?, pengacara = ?, jumlahTagihan = ? WHERE id = ?";
 
         try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
@@ -121,11 +127,11 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     System.out.println("Nama: " + resultSet.getString("nama"));
-                    System.out.println("Jenis Kasus: " + resultSet.getString("jenis_kasus"));
-                    System.out.println("Tanggal Registrasi: " + resultSet.getDate("tanggal_registrasi"));
+                    System.out.println("Jenis Kasus: " + resultSet.getString("jenisKasus"));
+                    System.out.println("Tanggal Registrasi: " + resultSet.getDate("tanggalRegistrasi"));
                     System.out.println("Status: " + resultSet.getString("status"));
                     System.out.println("Pengacara: " + resultSet.getString("pengacara"));
-                    System.out.println("Jumlah Tagihan: " + resultSet.getBigDecimal("jumlah_tagihan"));
+                    System.out.println("Jumlah Tagihan: " + resultSet.getBigDecimal("jumlahTagihan"));
                     System.out.println("-------------------");
                 }
             }
@@ -136,9 +142,11 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
 
     @Override
     public void showStatistikKasus() {
-        String sqlStatement = "SELECT jenis_kasus, COUNT(*) as jumlah, " +
-                "AVG(CASE WHEN status = 'Selesai' THEN 1.0 ELSE 0.0 END) * 100 as persentase_selesai " +
-                "FROM klien GROUP BY jenis_kasus";
+        String sqlStatement = "SELECT jenisKasus, COUNT(*) as jumlah, " +
+                "SUM(CASE WHEN status = 'Aktif' THEN 1 ELSE 0 END) as jumlah_aktif, " +
+                "SUM(CASE WHEN status = 'Selesai' THEN 1 ELSE 0 END) as jumlah_selesai";
+        int aktif = 0;
+        int selesai = 0;
 
         try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
@@ -146,10 +154,9 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
 
             System.out.println("STATISTIK KASUS:");
             while (resultSet.next()) {
-                System.out.println("Jenis Kasus: " + resultSet.getString("jenis_kasus"));
-                System.out.println("Jumlah Kasus: " + resultSet.getInt("jumlah"));
-                System.out.println("Persentase Selesai: " + resultSet.getDouble("persentase_selesai") + "%");
-                System.out.println("-------------------");
+                System.out.println("STATISTIK KASUS:");
+                System.out.println("Kasus Aktif: " + aktif);
+                System.out.println("Kasus Selesai: " + selesai);
             }
         } catch (SQLException e) {
             System.out.println("Error menampilkan statistik kasus: " + e.getMessage());
@@ -158,8 +165,8 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
 
     @Override
     public void showDaftarTagihan() {
-        String sqlStatement = "SELECT nama, jenis_kasus, jumlah_tagihan, status " +
-                "FROM klien ORDER BY jumlah_tagihan DESC";
+        String sqlStatement = "SELECT nama, jumlahTagihan, " +
+                "FROM klien ORDER BY jumlahTagihan DESC";
 
         try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
@@ -168,10 +175,8 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
             System.out.println("DAFTAR TAGIHAN:");
             while (resultSet.next()) {
                 System.out.println("Nama: " + resultSet.getString("nama"));
-                System.out.println("Jenis Kasus: " + resultSet.getString("jenis_kasus"));
                 System.out.println("Jumlah Tagihan: " + resultSet.getBigDecimal("jumlah_tagihan"));
-                System.out.println("Status: " + resultSet.getString("status"));
-                System.out.println("-------------------");
+
             }
         } catch (SQLException e) {
             System.out.println("Error menampilkan daftar tagihan: " + e.getMessage());

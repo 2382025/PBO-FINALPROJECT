@@ -6,6 +6,11 @@ public class LawFirmRepositoryImpl implements LawFirmRepository {
     private Klien[] daftarKlien = new Klien[10];
 
     @Override
+    public Klien[] getAll() {
+        return new Klien[0];
+    }
+
+    @Override
     public void showDaftarKlien() {
         int nomor = 1;
         for (Klien klien : daftarKlien) {
@@ -63,6 +68,11 @@ public class LawFirmRepositoryImpl implements LawFirmRepository {
         klien.setPengacara(pengacaraBaru);
         klien.setJumlahTagihan(tagihanBaru);
         return true;
+    }
+
+    @Override
+    public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String statusBaru, String pengacaraBaru, String tagihanBaru) {
+        return false;
     }
 
     @Override

@@ -18,6 +18,11 @@ public class Klien{
         this.jumlahTagihan = jumlahTagihan;
     }
 
+    public Klien() {
+
+    }
+
+
     // Getter dan Setter
     public String getNama() {
         return nama;
