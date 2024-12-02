@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
+@Component
 public class LawFirmRepositoryDbImpl implements LawFirmRepository {
     private final Database database;
 
+    @Autowired
     public LawFirmRepositoryDbImpl(final Database database) {
         this.database = database;
     }

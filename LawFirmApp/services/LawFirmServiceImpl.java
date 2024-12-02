@@ -1,10 +1,15 @@
 package LawFirmApp.services;
 
+import LawFirmApp.entities.Klien;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import LawFirmApp.repositories.LawFirmRepository;
 
+@Component
 public class LawFirmServiceImpl implements LawFirmService {
     private final LawFirmRepository lawFirmRepository;
 
+    @Autowired
     public LawFirmServiceImpl(LawFirmRepository lawFirmRepository) {
         this.lawFirmRepository = lawFirmRepository;
     }
