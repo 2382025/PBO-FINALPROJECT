@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="commons-logging-1.3.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Documents/pebeo/commons-logging-1.3.4.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/pebeo/lombok-1.18.34.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/pebeo/slf4j-api-2.0.16.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/pebeo/spring-aop-6.1.14.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/pebeo/spring-beans-6.1.14.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/pebeo/spring-context-6.1.14.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/pebeo/spring-core-6.1.14.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/pebeo/spring-expression-6.1.14.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/PBO/mysql-connector_801f14bd66d1a7abd2564f345b89a392.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

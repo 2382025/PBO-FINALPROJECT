@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,17 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
 
     @Override
     public void showDaftarKlien() {
+        String sqlStatement = "SELECT * FROM KLIEN";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
+
+        } catch (SQLException e) {
+            System.out.println("Error menambahkan klien: " + e.getMessage());
+        }
+    }
+        }
+        // TODO: selesaikan show daftar klien
 
     }
 
@@ -56,7 +68,7 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
 
             preparedStatement.setString(1, nama);
             preparedStatement.setString(2, jenisKasus);
-            preparedStatement.setDate(3, java.sql.Date.valueOf(tanggalRegistrasi));
+            preparedStatement.setString(3, tanggalRegistrasi);
             preparedStatement.setString(4, status);
             preparedStatement.setString(5, pengacara);
             preparedStatement.setBigDecimal(6, new java.math.BigDecimal(jumlahTagihan));

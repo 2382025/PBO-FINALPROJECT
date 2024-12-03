@@ -79,7 +79,7 @@ public class LawFirmTerminalViewImpl implements LawFirmView {
         String nama = input("Nama Klien (x jika batal)");
         if (!nama.equals("x")) {
             String jenisKasus = input("Jenis Kasus");
-            String tanggalRegistrasi = input("Tanggal Registrasi (dd-MM-yyyy)");
+            String tanggalRegistrasi = input("Tanggal Registrasi (yyyy-mm-dd)");
             String status = input("Status Kasus");
             String pengacara = input("Pengacara yang Ditugaskan");
             String jumlahTagihan = input("Jumlah Tagihan");

@@ -1,5 +1,6 @@
 import config.Database;
 import repositories.LawFirmRepository;
+import repositories.LawFirmRepositoryDbImpl;
 import repositories.LawFirmRepositoryImpl;
 import services.LawFirmService;
 import services.LawFirmServiceImpl;
@@ -12,7 +13,7 @@ public class Main {
         Database database = new Database("lawfirm", "root", "", "localhost", "3306");
         database.setup();
 
-        LawFirmRepository lawFirmRepository = new LawFirmRepositoryImpl();
+        LawFirmRepository lawFirmRepository = new LawFirmRepositoryDbImpl(database);
         LawFirmService lawFirmService = new LawFirmServiceImpl(lawFirmRepository);
         LawFirmView lawFirmView = new LawFirmTerminalViewImpl(lawFirmService);
         lawFirmView.run();

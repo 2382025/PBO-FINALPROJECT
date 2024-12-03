@@ -13,6 +13,7 @@ public interface LawFirmRepository {
 
     boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String pengacaraBaru, String tagihanBaru);
 
+
     boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String statusBaru, String pengacaraBaru, String tagihanBaru);
 
     boolean removeKlien(Integer number);
