@@ -22,8 +22,9 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
         String sqlStatement = "SELECT * FROM klien";
         List<Klien> klienList = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Klien klien = new Klien();
@@ -47,9 +48,10 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
         String sqlStatement = "SELECT nama, jenisKasus, tanggalRegistrasi, status, pengacara, jumlahTagihan FROM klien";
         List<Klien> daftarKlien = new ArrayList<>();
 
-        try (Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Klien klien = new Klien();
@@ -81,8 +83,9 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
     public void addKlien(String nama, String jenisKasus, String tanggalRegistrasi, String status, String pengacara, String jumlahTagihan) {
         String sqlStatement = "INSERT INTO klien (nama, jenisKasus, tanggalRegistrasi, status, pengacara, jumlahTagihan) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
 
             preparedStatement.setString(1, nama);
             preparedStatement.setString(2, jenisKasus);
@@ -109,8 +112,9 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
     public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String statusBaru, String pengacaraBaru, String tagihanBaru) {
         String sqlStatement = "UPDATE klien SET nama = ?, jenisKasus = ?, tanggalRegistrasi = ?, status = ?, pengacara = ?, jumlahTagihan = ? WHERE nomor = ?";
 
-        try (Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
 
             preparedStatement.setString(1, namaBaru);
             preparedStatement.setString(2, jenisKasusBaru);
@@ -119,6 +123,7 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
             preparedStatement.setString(5, pengacaraBaru);
             preparedStatement.setBigDecimal(6, new java.math.BigDecimal(tagihanBaru));
             preparedStatement.setInt(7, number);
+
 
             int rowsEffected = preparedStatement.executeUpdate();
             if (rowsEffected > 0) {
@@ -135,8 +140,9 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
     public boolean removeKlien(Integer number) {
         String sqlStatement = "DELETE FROM klien WHERE nomor = ?";
 
-        try (Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
 
             preparedStatement.setInt(1, number);
 
@@ -155,12 +161,14 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
     public void searchKlien(String nama) {
         String sqlStatement = "SELECT * FROM klien WHERE nama LIKE ?";
 
-        try (Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
 
             preparedStatement.setString(1, "%" + nama + "%");
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            try {
+                ResultSet resultSet = preparedStatement.executeQuery();
                 boolean found = false;
                 while (resultSet.next()) {
                     found = true;
@@ -177,7 +185,10 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
                 if (!found) {
                     System.out.println("Tidak ada klien yang ditemukan dengan nama: " + nama);
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
+
         } catch (SQLException e) {
             System.out.println("Error mencari klien: " + e.getMessage());
         }
@@ -190,9 +201,10 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
                 "SUM(CASE WHEN status = 'Selesai' THEN 1 ELSE 0 END) AS jumlahSelesai " +
                 "FROM klien";
 
-        try (Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             System.out.println("STATISTIK KASUS:");
             if (resultSet.next()) {
@@ -214,9 +226,10 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
         String sqlStatement = "SELECT nama, jumlahTagihan FROM klien ORDER BY jumlahTagihan DESC";
         List<Klien> daftarTagihan = new ArrayList<>();
 
-        try (Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try{
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Klien klien = new Klien();
@@ -229,8 +242,12 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
         }
 
         System.out.println("DAFTAR TAGIHAN KLIEN:");
+        int nomor = 1;
         for (Klien klien : daftarTagihan) {
-            System.out.println("Nama: " + klien.getNama() + " | Tagihan: " + klien.getJumlahTagihan());
+            System.out.println("");
+            System.out.println(nomor +  ". Nama: " + klien.getNama() + " | Tagihan: " + klien.getJumlahTagihan());
+            System.out.println("");
+            nomor++;
         }
     }
 
