@@ -42,7 +42,7 @@ public class LawFirmServiceImpl implements LawFirmService {
             return false;
         }
 
-        // Call repository method to edit client
+        //memanggil repository untuk mengedit klien
         return lawFirmRepository.editKlien(number, namaBaru, jenisKasusBaru, tanggalBaru, pengacaraBaru, tagihanBaru);
     }
 

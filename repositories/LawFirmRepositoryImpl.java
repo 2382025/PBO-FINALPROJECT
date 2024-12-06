@@ -16,7 +16,7 @@ public class LawFirmRepositoryImpl implements LawFirmRepository {
         for (Klien klien : daftarKlien) {
             if (klien != null) {
                 System.out.println(nomor + ". | Nama: " + klien.getNama() + " | Kasus: " + klien.getJenisKasus() + " | Pengacara: " + klien.getPengacara() + " | Status: " + klien.getStatus() + "|");
-            nomor++;
+                nomor++;
             }
         }
     }
@@ -70,10 +70,6 @@ public class LawFirmRepositoryImpl implements LawFirmRepository {
         return true;
     }
 
-    @Override
-    public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String statusBaru, String pengacaraBaru, String tagihanBaru) {
-        return false;
-    }
 
     @Override
     public boolean removeKlien(Integer number) {
@@ -141,7 +137,12 @@ public class LawFirmRepositoryImpl implements LawFirmRepository {
         return true;
     }
 
-    // Assume this method checks if the selected client is valid
+    @Override
+    public void showDaftarKlien(String nama, String jenisKasus, String tanggalRegistrasi, String status, String pengacara, String jumlahTagihan) {
+
+    }
+
+
     private boolean isSelectedKlienNotValid(Integer number) {
         return number < 1 || number > daftarKlien.length || daftarKlien[number - 1] == null;
     }
