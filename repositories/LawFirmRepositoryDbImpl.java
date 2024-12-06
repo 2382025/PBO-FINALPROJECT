@@ -103,14 +103,11 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
         }
     }
 
-    @Override
-    public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String pengacaraBaru, String tagihanBaru) {
-        return false;
-    }
+
 
     @Override
-    public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String statusBaru, String pengacaraBaru, String tagihanBaru) {
-        String sqlStatement = "UPDATE klien SET nama = ?, jenisKasus = ?, tanggalRegistrasi = ?, status = ?, pengacara = ?, jumlahTagihan = ? WHERE nomor = ?";
+    public boolean editKlien(Integer number, String namaBaru, String jenisKasusBaru, String tanggalBaru, String pengacaraBaru, String tagihanBaru) {
+        String sqlStatement = "UPDATE klien SET nama = ?, jenisKasus = ?, tanggalRegistrasi = ?, pengacara = ?, jumlahTagihan = ? WHERE nomor = ?";
 
         try{
             Connection connection = database.getConnection();
@@ -119,10 +116,9 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
             preparedStatement.setString(1, namaBaru);
             preparedStatement.setString(2, jenisKasusBaru);
             preparedStatement.setDate(3, java.sql.Date.valueOf(tanggalBaru));
-            preparedStatement.setString(4, statusBaru);
-            preparedStatement.setString(5, pengacaraBaru);
-            preparedStatement.setBigDecimal(6, new java.math.BigDecimal(tagihanBaru));
-            preparedStatement.setInt(7, number);
+            preparedStatement.setString(4, pengacaraBaru);
+            preparedStatement.setBigDecimal(5, new java.math.BigDecimal(tagihanBaru));
+            preparedStatement.setInt(6, number);
 
 
             int rowsEffected = preparedStatement.executeUpdate();
@@ -211,10 +207,10 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
                 int jumlahAktif = resultSet.getInt("jumlahAktif");
                 int jumlahSelesai = resultSet.getInt("jumlahSelesai");
 
-                System.out.println("");
+                System.out.println("_");
                 System.out.println("Aktif: " + jumlahAktif);
                 System.out.println("Selesai: " + jumlahSelesai);
-                System.out.println("");
+                System.out.println("_");
             }
         } catch (SQLException e) {
             System.out.println("Error menampilkan statistik kasus: " + e.getMessage());
@@ -244,17 +240,37 @@ public class LawFirmRepositoryDbImpl implements LawFirmRepository {
         System.out.println("DAFTAR TAGIHAN KLIEN:");
         int nomor = 1;
         for (Klien klien : daftarTagihan) {
-            System.out.println("");
+            System.out.println("_");
             System.out.println(nomor +  ". Nama: " + klien.getNama() + " | Tagihan: " + klien.getJumlahTagihan());
-            System.out.println("");
+            System.out.println("_");
             nomor++;
         }
     }
 
     @Override
     public boolean ubahStatusKasus(Integer number, String statusBaru) {
+        String sqlStatement = "UPDATE klien SET status = ? WHERE nomor = ?";
+
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+
+            preparedStatement.setString(1, statusBaru);
+            preparedStatement.setInt(2, number);
+
+            int rowsEffected = preparedStatement.executeUpdate();
+            if (rowsEffected > 0) {
+                System.out.println("Status kasus berhasil diubah!");
+                return true;
+            } else {
+                System.out.println("Nomor kasus tidak ditemukan.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error mengubah status kasus: " + e.getMessage());
+        }
         return false;
     }
+
 
     @Override
     public void showDaftarKlien(String nama, String jenisKasus, String tanggalRegistrasi, String status, String pengacara, String jumlahTagihan) {
